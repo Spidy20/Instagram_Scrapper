@@ -2,7 +2,7 @@ from PIL import ImageTk
 import PIL.Image
 from tkinter import *
 import tkinter as tk
-import requests
+import requests,webbrowser
 import io
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
@@ -23,7 +23,7 @@ def search():
         res = requests.get('https://www.instagram.com/' + un)
         s_data = BeautifulSoup(res.text, 'html.parser')
 
-        ## Download DP
+        ## Fetch DP in system
         insta_dp = s_data.find("meta", property="og:image")
         dp_url = insta_dp.attrs['content']
 
@@ -51,7 +51,7 @@ def search():
 
         ## Show DP
         image = ImageTk.PhotoImage(im5)
-        panel5 = Label(windo,image = image,borderwidth=0)
+        panel5 = Button(windo,image = image, command = check_link,borderwidth=0)
         panel5.image = image
         panel5.pack()
         panel5.place(x=885, y=90)
@@ -71,6 +71,10 @@ def search():
                         font=('times', 14, ' bold '))
         lab1.place(x=400, y=250)
         windo.after(4000, destroy_widget, lab1)
+
+def check_link():
+    link = 'https://www.instagram.com/' + un
+    webbrowser.open_new_tab(link)
 
 def clear():
     txt2.delete(first=0,last=100)
